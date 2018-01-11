@@ -2,6 +2,7 @@ from flask import Flask, request, redirect
 from twilio.twiml.messaging_response import MessagingResponse
 from datetime import datetime, timedelta
 import db_utils
+import os
 
 app = Flask(__name__)
 
