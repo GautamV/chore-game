@@ -130,7 +130,8 @@ def get_stats(chore):
 		"""
 
 	resp = MessagingResponse()
-	resp.media(image_url)
+	msg = resp.message("stats for all time\n\n")
+	msg.media(image_url)
 	return str(resp)
 
 def get_stats_by_date(chore, days):
@@ -182,7 +183,8 @@ def get_stats_by_date(chore, days):
 		"""
 
 	resp = MessagingResponse()
-	resp.media(image_url)
+	msg = resp.message("stats for last {0} days\n\n".format(days))
+	msg.media(image_url)
 	return str(resp)
 
 if __name__ == "__main__":
