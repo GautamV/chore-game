@@ -7,8 +7,8 @@ import os
 
 app = Flask(__name__)
 
-image_path = "image.png"
-image_url = "https://chore-game.heroku.com/pic"
+image_path = "tmp/image.png"
+image_url = "https://chore-game.herokuapp.com/pic"
 
 @app.route("/pic", methods=['GET', 'POST'])
 def serve_image():
