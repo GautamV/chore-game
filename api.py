@@ -101,7 +101,8 @@ def get_stats(chore):
 		resp.message("no data available")
 		return str(resp)
 
-	os.remove(image_path)
+	if os.path.isfile(image_path):
+		os.remove(image_path)
 
 	if chore == 'all':
 		plot_utils.make_chores_plot(data, image_path)
@@ -134,7 +135,8 @@ def get_stats_by_date(chore, days):
 		resp.message("no data available")
 		return str(resp)
 
-	os.remove(image_path)
+	if os.path.isfile(image_path):
+		os.remove(image_path)
 
 	if chore == 'all':
 		plot_utils.make_chores_plot(data, image_path)
