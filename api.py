@@ -8,7 +8,12 @@ import os
 app = Flask(__name__)
 
 image_path = "image.png"
-image_url = "https://chore-game.herokuapp.com/pic"
+image_url = "https://chore-game.herokuapp.com/image"
+
+@app.after_request
+def add_header(response):
+    response.cache_control.max_age = 30
+    return response
 
 @app.route("/error", methods=['GET', 'POST'])
 def error():
@@ -16,7 +21,7 @@ def error():
 	resp.message("there was an error while creating a response to your text")
 	return str(resp)
 
-@app.route("/pic", methods=['GET', 'POST'])
+@app.route("/image", methods=['GET', 'POST'])
 def serve_image():
 	return send_file(image_path, mimetype='image/png')
 
