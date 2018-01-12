@@ -2,13 +2,13 @@ import db_utils
 
 users = [('Gautam', '+19084204948'), ('Shyam', '+19083589340'), ('Shravan', '+19083589574')]
 chores = ['Dishes', 'Cleaning', 'Laundry']
-instances = [(1, 1), (1, 2), (2, 1), (2, 3), (1, 1, 14), (2, 3, 14)]
+instances = [(1, 1, 0), (1, 2, 0), (2, 1, 0), (2, 3, 0), (1, 1, 14), (2, 3, 14)]
 
 for user in users:
-	db_utils.add_user(user)
+	db_utils.add_user(user[0], user[1])
 
 for chore in chores:
 	db_utils.add_chore(chore)
 
 for instance in instances:
-	db_utils.add_instance(instance)
+	db_utils.add_instance(instance[0], instance[1], instance[2])
