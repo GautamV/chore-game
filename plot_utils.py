@@ -16,9 +16,11 @@ def make_chore_plot(chore, user_data, filepath):
 	fig = plt.figure()
 
 	y_pos = np.arange(len(users))
+	y_tix = range(0, max(scores) + 1)
 
 	plt.bar(y_pos, scores, align='center', alpha=0.5)
 	plt.xticks(y_pos, users)
+	plt.yticks(y_tix)
 	plt.ylabel('Times Done')
 	plt.title('Stats for {0}'.format(chore))
 
@@ -43,7 +45,7 @@ def make_chores_plot(user_data, filepath):
 	 
 	fig, ax = plt.subplots()
 	index = np.arange(len(chore_names))
-	bar_width = 1.0 / (len(chore_names) * len(user_names))
+	bar_width = 0.9 / len(user_names)
 	opacity = 0.8
 
 	for i, user in enumerate(user_stats): 
@@ -52,10 +54,13 @@ def make_chores_plot(user_data, filepath):
 				color=colors[i],
 				label=user)
 
+	y_tix = range(0, max([max(i) for i in user_stats.itervalues()]) + 1)
+
 	plt.xlabel('Chore')
 	plt.ylabel('Times Done')
 	plt.title('Stats by Chore')
 	plt.xticks(index + 0.5*bar_width*(len(user_names) - 1), chore_names)
+	plt.yticks(y_tix)
 	plt.legend()
 	 
 	plt.tight_layout()
