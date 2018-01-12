@@ -61,8 +61,8 @@ def make_insert_query_default_id(table_name, values):
 
 def get_naive_stats(start_date=min_date, end_date=max_date):
 	q = """
-		select user_name, count(*) as count from 
-			(select user_name, timestamp from users join instances on users.id = instances.user_id where timestamp >= %s and timestamp <= %s) as users_instances 
+		select user_name, count(timestamp) as count from 
+			(select user_name, timestamp from users left join instances on users.id = instances.user_id where timestamp >= %s and timestamp <= %s) as users_instances 
 		group by user_name;
 		"""
 	d = [start_date, end_date]
@@ -72,9 +72,10 @@ def get_naive_stats(start_date=min_date, end_date=max_date):
 
 def get_chores_stats(start_date=min_date, end_date=max_date):
 	q = """
-		select user_name, chore_name, count(*) as count from 
-			((select user_name, chore_id, timestamp from users join instances on users.id = instances.user_id where timestamp >= %s and timestamp <= %s) as users_instances 
-			join chores on users_instances.chore_id = chores.id) as all_data
+		select user_name, chore_name, count(timestamp) as count from 
+			(select user_name, users.id as user_id, chore_name, chores.id as chore_id from users cross join chores) as user_chores 
+			left join instances on user_chores.user_id = instances.user_id and user_chores.chore_id = instances.chore_id 
+			where timestamp >= %s and timestamp <= %s
 		group by user_name, chore_name;
 		"""
 	d = [start_date, end_date]
@@ -84,12 +85,13 @@ def get_chores_stats(start_date=min_date, end_date=max_date):
 
 def get_chore_stats(chore_name, start_date=min_date, end_date=max_date):
 	q = """
-		select user_name, count(*) as count from 
-			((select user_name, chore_id, timestamp from users join instances on users.id = instances.user_id where timestamp >= %s and timestamp <= %s) as users_instances 
-			join chores on users_instances.chore_id = chores.id) as all_data where chore_name = %s
+		select user_name, count(timestamp) as count from 
+			(select user_name, users.id as user_id, chore_name, chores.id as chore_id from users cross join chores) as user_chores 
+			left join instances on user_chores.user_id = instances.user_id and user_chores.chore_id = instances.chore_id 
+			where chore_name = %s and timestamp >= %s and timestamp <= %s
 		group by user_name;
 		"""
-	d = [start_date, end_date, chore_name]
+	d = [chore_name, start_date, end_date]
 	cur.execute(q, d)
 
 	return cur.fetchall()

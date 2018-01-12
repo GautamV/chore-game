@@ -1,10 +1,19 @@
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, send_file
 from twilio.twiml.messaging_response import MessagingResponse
 from datetime import datetime, timedelta
 import db_utils
+import plot_utils
 import os
 
 app = Flask(__name__)
+
+image_path = "image.png"
+image_url = "https://chore-game.heroku.com/pic"
+
+@app.route("/pic", methods=['GET', 'POST'])
+def serve_image():
+	return send_file(image_path, mimetype='image/png')
+
 
 @app.route("/sms", methods=['GET', 'POST'])
 def incoming_sms():
@@ -93,27 +102,35 @@ def get_stats(chore):
 		return str(resp)
 
 	if chore == 'all':
+		plot_utils.make_chores_plot(data, image_path)
+
+		"""
 		dic = {}
 		for row in data:
 			if row[1] in dic: 
 				dic[row[1]].append((row[0], row[2]))
 			else:
 				dic[row[1]] = [(row[0], row[2])]
-		s = "stats\n\n"
+		s = "stats for all time\n\n"
 		for k, v in dic.iteritems(): 
 			s += "Stats for {0}:\n".format(k)
 			for row in v: 
 				s += "{0}: {1} \n".format(row[0], row[1])
 			s += "\n"
+		"""
 
-	else: 
-		s = "stats\n\n"
+	else:
+		plot_utils.make_chore_plot(chore, data, image_path)
+
+		""" 
+		s = "stats for all time\n\n"
 		s += "Stats for {0}:\n".format(chore)
 		for row in data: 
 			s += "{0}: {1} \n".format(row[0], row[1])
+		"""
 
 	resp = MessagingResponse()
-	resp.message(s)
+	resp.media(image_url)
 	return str(resp)
 
 def get_stats_by_date(chore, days):
@@ -137,27 +154,35 @@ def get_stats_by_date(chore, days):
 		return str(resp)
 
 	if chore == 'all':
+		plot_utils.make_chores_plot(data, image_path)
+
+		"""
 		dic = {}
 		for row in data:
 			if row[1] in dic: 
 				dic[row[1]].append((row[0], row[2]))
 			else:
 				dic[row[1]] = [(row[0], row[2])]
-		s = "stats for last {0} days\n\n".format(days)
+		s = "stats for all time\n\n"
 		for k, v in dic.iteritems(): 
 			s += "Stats for {0}:\n".format(k)
 			for row in v: 
 				s += "{0}: {1} \n".format(row[0], row[1])
 			s += "\n"
+		"""
 
-	else: 
-		s = "stats for last {0} days\n\n".format(days)
+	else:
+		plot_utils.make_chore_plot(chore, data, image_path)
+
+		""" 
+		s = "stats for all time\n\n"
 		s += "Stats for {0}:\n".format(chore)
 		for row in data: 
 			s += "{0}: {1} \n".format(row[0], row[1])
+		"""
 
 	resp = MessagingResponse()
-	resp.message(s)
+	resp.media(image_url)
 	return str(resp)
 
 if __name__ == "__main__":
