@@ -18,4 +18,4 @@ if __name__ == "__main__":
 	conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT) 
 	cur = conn.cursor()
 
-	cur.execute("""truncate users, chores, instances;""")
+	cur.execute("""truncate users, chores, instances restart identity;""")
