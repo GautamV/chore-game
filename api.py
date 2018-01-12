@@ -10,11 +10,17 @@ app = Flask(__name__)
 image_path = "image.png"
 image_url = "https://chore-game.herokuapp.com/pic"
 
+@app.route("/error", methods=['GET', 'POST'])
+def error():
+	resp = MessagingResponse()
+	resp.message("there was an error while creating a response to your text")
+	return str(resp)
+
 @app.route("/pic", methods=['GET', 'POST'])
 def serve_image():
 	return send_file(image_path, mimetype='image/png')
 
-
+"""Needs to be refactored"""
 @app.route("/sms", methods=['GET', 'POST'])
 def incoming_sms():
 
@@ -25,7 +31,7 @@ def incoming_sms():
 		return 
 
 	if words[0] == 'add':
-		if len(words) != 3:
+		if len(words) < 3 or len(words) > 4:
 			resp = MessagingResponse()
 			resp.message("wrong command syntax")
 			return str(resp)
@@ -35,7 +41,15 @@ def incoming_sms():
 		elif words[1] == 'user':
 			return add_user(words[2])
 		elif words[1] == 'instance':
-			return add_instance(words[2])
+			days = 0
+			if len(words) == 4:
+				try: 
+					days = int(words[3])
+				except: 
+					resp = MessagingResponse()
+					resp.message("fourth argument must be an integer number of days")
+					return str(resp)
+			return add_instance(words[2], days)
 		else:
 			resp = MessagingResponse()
 			resp.message("i'm not sure what you're trying to add")
@@ -69,7 +83,7 @@ def add_user(name):
 	resp.message("added user {0} with number {1}".format(name, number))
 	return str(resp)
 
-def add_instance(chore):
+def add_instance(chore, days):
 	number = request.values.get('From', None)
 
 	data = db_utils.get_user_by_phone(number)
@@ -86,16 +100,19 @@ def add_instance(chore):
 		return str(resp)
 	chore_id = data[0]
 
-	db_utils.add_instance(user_id, chore_id)
+	db_utils.add_instance(user_id, chore_id, days)
 	resp = MessagingResponse()
 	resp.message("recorded that {0} did {1}. good job!".format(user_name, chore))
 	return str(resp)
 
 def get_stats(chore):
+	print "get " + chore + " stats called without date parameters"
+
 	if chore == 'all':
 		data = db_utils.get_chores_stats()
 	else: 
 		data = db_utils.get_chore_stats(chore)
+	print data
 	if data is None or len(data) == 0: 
 		resp = MessagingResponse()
 		resp.message("no data available")
@@ -116,6 +133,8 @@ def get_stats(chore):
 	return str(resp)
 
 def get_stats_by_date(chore, days):
+	print "get " + chore + " stats called with date parameters"		
+
 	try: 
 		delta = int(days)
 	except:
@@ -130,6 +149,7 @@ def get_stats_by_date(chore, days):
 		data = db_utils.get_chores_stats(start_date=start, end_date=end)
 	else: 
 		data = db_utils.get_chore_stats(chore, start_date=start, end_date=end)
+	print data
 	if data is None or len(data) == 0: 
 		resp = MessagingResponse()
 		resp.message("no data available")

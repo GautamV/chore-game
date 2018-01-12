@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 colors = ['b', 'g', 'y', 'c', 'm', 'y', 'k', 'w']
 
 def make_chore_plot(chore, user_data, filepath):
+	print "making single chore plot"
+
 	data = zip(*user_data)
 	users = data[0]
 	scores = data[1]
@@ -20,9 +22,12 @@ def make_chore_plot(chore, user_data, filepath):
 	plt.ylabel('Times Done')
 	plt.title('Stats for {0}'.format(chore))
 
+	print "saving fig"
 	fig.savefig(filepath, dpi=fig.dpi)
 
 def make_chores_plot(user_data, filepath):
+	print "making plot for all chores"
+
 	data = zip(*user_data)
 	chore_names = list(set(data[1]))
 	user_names = list(set(data[0]))
@@ -55,4 +60,5 @@ def make_chores_plot(user_data, filepath):
 	 
 	plt.tight_layout()
 	
+	print "saving fig"
 	fig.savefig(filepath, dpi=fig.dpi)
