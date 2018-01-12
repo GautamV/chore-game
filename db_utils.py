@@ -35,7 +35,7 @@ def add_user(name, phone_number):
 	return cur.execute(q, values)
 
 def add_instance(user_id, chore_id, days_ago):
-	timstamp = datetime.utcnow() - timedelta(days=days_ago)
+	timestamp = datetime.utcnow() - timedelta(days=days_ago)
 	values = [user_id, chore_id, timestamp]
 	q = make_insert_query(instance_table, values)
 	return cur.execute(q, values)
