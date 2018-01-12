@@ -101,33 +101,13 @@ def get_stats(chore):
 		resp.message("no data available")
 		return str(resp)
 
+	os.remove(image_path)
+
 	if chore == 'all':
 		plot_utils.make_chores_plot(data, image_path)
 
-		"""
-		dic = {}
-		for row in data:
-			if row[1] in dic: 
-				dic[row[1]].append((row[0], row[2]))
-			else:
-				dic[row[1]] = [(row[0], row[2])]
-		s = "stats for all time\n\n"
-		for k, v in dic.iteritems(): 
-			s += "Stats for {0}:\n".format(k)
-			for row in v: 
-				s += "{0}: {1} \n".format(row[0], row[1])
-			s += "\n"
-		"""
-
 	else:
 		plot_utils.make_chore_plot(chore, data, image_path)
-
-		""" 
-		s = "stats for all time\n\n"
-		s += "Stats for {0}:\n".format(chore)
-		for row in data: 
-			s += "{0}: {1} \n".format(row[0], row[1])
-		"""
 
 	resp = MessagingResponse()
 	msg = resp.message("stats for all time\n\n")
@@ -154,33 +134,13 @@ def get_stats_by_date(chore, days):
 		resp.message("no data available")
 		return str(resp)
 
+	os.remove(image_path)
+
 	if chore == 'all':
 		plot_utils.make_chores_plot(data, image_path)
 
-		"""
-		dic = {}
-		for row in data:
-			if row[1] in dic: 
-				dic[row[1]].append((row[0], row[2]))
-			else:
-				dic[row[1]] = [(row[0], row[2])]
-		s = "stats for all time\n\n"
-		for k, v in dic.iteritems(): 
-			s += "Stats for {0}:\n".format(k)
-			for row in v: 
-				s += "{0}: {1} \n".format(row[0], row[1])
-			s += "\n"
-		"""
-
 	else:
 		plot_utils.make_chore_plot(chore, data, image_path)
-
-		""" 
-		s = "stats for all time\n\n"
-		s += "Stats for {0}:\n".format(chore)
-		for row in data: 
-			s += "{0}: {1} \n".format(row[0], row[1])
-		"""
 
 	resp = MessagingResponse()
 	msg = resp.message("stats for last {0} days\n\n".format(days))

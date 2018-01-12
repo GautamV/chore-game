@@ -47,7 +47,7 @@ def make_chores_plot(user_data, filepath):
 				color=colors[i],
 				label=user)
 
-	plt.xlabel('Person')
+	plt.xlabel('Chore')
 	plt.ylabel('Times Done')
 	plt.title('Stats by Chore')
 	plt.xticks(index + 0.5*bar_width*(len(user_names) - 1), chore_names)
