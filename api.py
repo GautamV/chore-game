@@ -29,7 +29,7 @@ def incoming_sms():
 			return add_instance(words[2])
 		else:
 			resp = MessagingResponse()
-			resp.message("i'm not sure what you're tryong to add")
+			resp.message("i'm not sure what you're trying to add")
 			return str(resp)
 
 	elif words[0] == 'stats':
@@ -161,6 +161,6 @@ def get_stats_by_date(chore, days):
 	return str(resp)
 
 if __name__ == "__main__":
-	port = int(os.environ.get('PORT', 5000))
+	port = int(os.environ['PORT'])
 	app.run(host='0.0.0.0', port=port)
 
