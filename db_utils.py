@@ -1,6 +1,6 @@
 import os
 import urlparse
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, MINYEAR, MAXYEAR
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
@@ -17,8 +17,8 @@ conn = psycopg2.connect(
 conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 cur = conn.cursor()
 
-min_date = datetime.datetime(year=datetime.MINYEAR, month=1, day=1)
-max_date = datetime.datetime(year=datetime.MAXYEAR, month=1, day=1)
+min_date = datetime(year=MINYEAR, month=1, day=1)
+max_date = datetime(year=MAXYEAR, month=1, day=1)
 
 user_table = 'users'
 chore_table = 'chores'
