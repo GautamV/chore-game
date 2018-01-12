@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 colors = ['b', 'g', 'y', 'c', 'm', 'y', 'k', 'w']
 
-def make_chore_plot(chore, user_data, filepath):
+def make_chore_plot(chore, user_data, filepath, days=None):
 	print "making single chore plot"
 
 	data = zip(*user_data)
@@ -22,12 +22,17 @@ def make_chore_plot(chore, user_data, filepath):
 	plt.xticks(y_pos, users)
 	plt.yticks(y_tix)
 	plt.ylabel('Times Done')
-	plt.title('Stats for {0}'.format(chore))
+	title = 'Stats for {0} for'.format(chore)
+	if days is not None: 
+		title += ' Past {0} Days'.format(days)
+	else: 
+		title += ' All Time'
+	plt.title(title)
 
 	print "saving fig"
 	fig.savefig(filepath, dpi=fig.dpi)
 
-def make_chores_plot(user_data, filepath):
+def make_chores_plot(user_data, filepath, days=None):
 	print "making plot for all chores"
 
 	data = zip(*user_data)
@@ -58,7 +63,12 @@ def make_chores_plot(user_data, filepath):
 
 	plt.xlabel('Chore')
 	plt.ylabel('Times Done')
-	plt.title('Stats by Chore')
+	title = 'Stats by Chore for'
+	if days is not None: 
+		title += ' Past {0} Days'.format(days)
+	else: 
+		title += ' All Time'
+	plt.title(title)
 	plt.xticks(index + 0.5*bar_width*(len(user_names) - 1), chore_names)
 	plt.yticks(y_tix)
 	plt.legend()

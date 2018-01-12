@@ -164,10 +164,10 @@ def get_stats_by_date(chore, days):
 		os.remove(image_path)
 
 	if chore == 'all':
-		plot_utils.make_chores_plot(data, image_path)
+		plot_utils.make_chores_plot(data, image_path, days)
 
 	else:
-		plot_utils.make_chore_plot(chore, data, image_path)
+		plot_utils.make_chore_plot(chore, data, image_path, days)
 
 	resp = MessagingResponse()
 	msg = resp.message("stats for last {0} days\n\n".format(days))
