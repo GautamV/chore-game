@@ -8,7 +8,7 @@ import os
 app = Flask(__name__)
 
 image_path = "image.png"
-image_url = "https://chore-game.herokuapp.com/image"
+image_url = "https://chore-game.herokuapp.com/image" # CHANGE THIS TO YOUR URL
 
 @app.after_request
 def add_header(response):
